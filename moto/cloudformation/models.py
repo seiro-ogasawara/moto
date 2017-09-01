@@ -74,6 +74,10 @@ class FakeStack(BaseModel):
         ))
 
     def _parse_template(self):
+        def _constructor(loader, tag_suffix, node):
+            #TODO: handle shorthand intrinsic function, if needed
+            pass
+        yaml.add_multi_constructor('', _constructor)
         try:
             self.template_dict = yaml.load(self.template)
         except yaml.parser.ParserError:
