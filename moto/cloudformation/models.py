@@ -9,7 +9,7 @@ from moto.compat import OrderedDict
 from moto.core import BaseBackend, BaseModel
 
 from .parsing import ResourceMap, OutputMap
-from .utils import generate_stack_id
+from .utils import generate_stack_id, yaml_tag_constructor
 from .exceptions import ValidationError
 
 
@@ -74,10 +74,7 @@ class FakeStack(BaseModel):
         ))
 
     def _parse_template(self):
-        def _constructor(loader, tag_suffix, node):
-            #TODO: handle shorthand intrinsic function, if needed
-            pass
-        yaml.add_multi_constructor('', _constructor)
+        yaml.add_multi_constructor('', yaml_tag_constructor)
         try:
             self.template_dict = yaml.load(self.template)
         except yaml.parser.ParserError:
